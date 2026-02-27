@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,12 +28,21 @@ namespace WpflLab1
         private UserProfile _currentProfile;
 
         /// <summary>
+        /// Коллекция привычек для отображения в DataGrid.
+        /// </summary>
+        private ObservableCollection<Habit> _habits;
+
+        /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="MainWindow"/>.
-        /// Загружает компоненты пользовательского интерфейса.
+        /// Загружает компоненты пользовательского интерфейса и настраивает начальное состояние.
         /// </summary>
         public MainWindow()
         {
             InitializeComponent();
+
+            _habits = new ObservableCollection<Habit>();
+            HabitsDataGrid.ItemsSource = _habits;
+            HabitsCalendar.SelectedDate = DateTime.Today;
         }
 
         /// <summary>
@@ -127,6 +137,43 @@ namespace WpflLab1
             LowActivityRadio.IsChecked = false;
             MediumActivityRadio.IsChecked = false;
             HighActivityRadio.IsChecked = false;
+        }
+
+        /// <summary>
+        /// Обработчик нажатия кнопки "Добавить".
+        /// Создаёт новую привычку и добавляет её в коллекцию.
+        /// </summary>
+        private void AddHabit_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(HabitNameTextBox.Text))
+            {
+                MessageBox.Show("Введите название привычки.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            _habits.Add(new Habit
+            {
+                Name = HabitNameTextBox.Text.Trim(),
+                Time = HabitTimeTextBox.Text.Trim(),
+                IsCompleted = false
+            });
+
+            HabitNameTextBox.Clear();
+            HabitTimeTextBox.Clear();
+        }
+
+        /// <summary>
+        /// Обработчик изменения значения слайдеров продуктивности и удовлетворённости.
+        /// Обновляет текстовые подписи и пересчитывает прогресс дня как среднее двух значений.
+        /// </summary>
+        private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (ProductivityText == null || SatisfactionText == null || DayProgressBar == null)
+                return;
+
+            ProductivityText.Text = $"{(int)ProductivitySlider.Value}%";
+            SatisfactionText.Text = $"{(int)SatisfactionSlider.Value}%";
+            DayProgressBar.Value = (ProductivitySlider.Value + SatisfactionSlider.Value) / 2;
         }
     }
 }

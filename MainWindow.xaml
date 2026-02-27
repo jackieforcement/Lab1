@@ -148,24 +148,26 @@
                             <!-- Слайдер: Продуктивность -->
                             <Label Content="Продуктивность:"/>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Slider Minimum="0" Maximum="100" Value="50" Width="200"
+                                <Slider x:Name="ProductivitySlider" Minimum="0" Maximum="100" Value="50" Width="200"
                                         TickFrequency="10" IsSnapToTickEnabled="True"
-                                        TickPlacement="BottomRight"/>
-                                <TextBlock Text="50%" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                        TickPlacement="BottomRight"
+                                        ValueChanged="Slider_ValueChanged"/>
+                                <TextBlock x:Name="ProductivityText" Text="50%" Margin="10,0,0,0" VerticalAlignment="Center"/>
                             </StackPanel>
 
                             <!-- Слайдер: Удовлетворённость -->
                             <Label Content="Удовлетворённость:" Margin="0,10,0,0"/>
                             <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                                <Slider Minimum="0" Maximum="100" Value="50" Width="200"
+                                <Slider x:Name="SatisfactionSlider" Minimum="0" Maximum="100" Value="50" Width="200"
                                         TickFrequency="10" IsSnapToTickEnabled="True"
-                                        TickPlacement="BottomRight"/>
-                                <TextBlock Text="50%" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                        TickPlacement="BottomRight"
+                                        ValueChanged="Slider_ValueChanged"/>
+                                <TextBlock x:Name="SatisfactionText" Text="50%" Margin="10,0,0,0" VerticalAlignment="Center"/>
                             </StackPanel>
 
                             <!-- Прогресс дня -->
                             <Label Content="Прогресс дня:" Margin="0,10,0,0"/>
-                            <ProgressBar Height="25" Value="65" Minimum="0" Maximum="100"
+                            <ProgressBar x:Name="DayProgressBar" Height="25" Value="50" Minimum="0" Maximum="100"
                                          Margin="0,0,0,10"/>
 
                             <!-- Заметки -->
@@ -175,7 +177,7 @@
 
                             <!-- Календарь -->
                             <Label Content="Выберите дату:"/>
-                            <Calendar Margin="0,0,0,10" HorizontalAlignment="Left"/>
+                            <Calendar x:Name="HabitsCalendar" Margin="0,0,0,10" HorizontalAlignment="Left"/>
 
                         </StackPanel>
                     </ScrollViewer>
@@ -241,19 +243,20 @@
                           Margin="0,10,0,0">
                     <WrapPanel Margin="5">
                         <Label Content="Привычка:" VerticalAlignment="Center"/>
-                        <TextBox Width="200" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                        <TextBox x:Name="HabitNameTextBox" Width="200" Margin="0,0,10,0" VerticalAlignment="Center"/>
                         <Label Content="Время:" VerticalAlignment="Center"/>
-                        <TextBox Width="80" Margin="0,0,10,0" VerticalAlignment="Center"/>
-                        <Button Content="Добавить" Padding="15,5" VerticalAlignment="Center"/>
+                        <TextBox x:Name="HabitTimeTextBox" Width="80" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                        <Button Content="Добавить" Padding="15,5" VerticalAlignment="Center"
+                                Click="AddHabit_Click"/>
                     </WrapPanel>
                 </GroupBox>
 
                 <!-- Таблица привычек -->
-                <DataGrid AutoGenerateColumns="False" CanUserAddRows="False">
+                <DataGrid x:Name="HabitsDataGrid" AutoGenerateColumns="False" CanUserAddRows="False">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Привычка" Width="2*"/>
-                        <DataGridTextColumn Header="Время" Width="*"/>
-                        <DataGridCheckBoxColumn Header="Выполнено" Width="Auto"/>
+                        <DataGridTextColumn Header="Привычка" Width="2*" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="Время" Width="*" Binding="{Binding Time}"/>
+                        <DataGridCheckBoxColumn Header="Выполнено" Width="Auto" Binding="{Binding IsCompleted}"/>
                     </DataGrid.Columns>
                 </DataGrid>
 
