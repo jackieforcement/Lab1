@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Controls.Primitives;
+using Microsoft.Win32;
 
 namespace WpflLab1
 {
@@ -229,6 +231,256 @@ namespace WpflLab1
             {
                 StatusText.Text = $"Выбрана категория: {selectedItem.Header}";
             }
+        }
+
+        /// <summary>
+        /// Применяет тёмную или светлую тему ко всему интерфейсу,
+        /// переопределяя системные цвета и добавляя стили для всех типов контролов.
+        /// </summary>
+        /// <param name="isDark">true — тёмная тема, false — светлая.</param>
+        private void ApplyTheme(bool isDark)
+        {
+            if (isDark)
+            {
+                var darkBg = new SolidColorBrush(Color.FromRgb(45, 45, 48));
+                var controlBg = new SolidColorBrush(Color.FromRgb(62, 62, 66));
+                var inputBg = new SolidColorBrush(Color.FromRgb(51, 51, 55));
+                var lightText = new SolidColorBrush(Colors.WhiteSmoke);
+                var border = new SolidColorBrush(Color.FromRgb(100, 100, 100));
+
+                Background = darkBg;
+                Foreground = lightText;
+
+                Resources[SystemColors.WindowBrushKey] = darkBg;
+                Resources[SystemColors.WindowTextBrushKey] = lightText;
+                Resources[SystemColors.ControlBrushKey] = controlBg;
+                Resources[SystemColors.ControlTextBrushKey] = lightText;
+                Resources[SystemColors.ActiveBorderBrushKey] = border;
+                Resources[SystemColors.InactiveBorderBrushKey] = border;
+
+                foreach (var t in new[] { typeof(Button), typeof(ToggleButton), typeof(RepeatButton) })
+                    Resources[t] = MakeStyle(t,
+                        new Setter(Control.BackgroundProperty, controlBg),
+                        new Setter(Control.ForegroundProperty, lightText),
+                        new Setter(Control.BorderBrushProperty, border));
+
+                Resources[typeof(TabControl)] = MakeStyle(typeof(TabControl),
+                    new Setter(Control.BackgroundProperty, darkBg),
+                    new Setter(Control.BorderBrushProperty, border));
+                Resources[typeof(TabItem)] = MakeStyle(typeof(TabItem),
+                    new Setter(Control.BackgroundProperty, controlBg),
+                    new Setter(Control.ForegroundProperty, lightText),
+                    new Setter(Control.BorderBrushProperty, border));
+
+                Resources[typeof(TextBox)] = MakeStyle(typeof(TextBox),
+                    new Setter(Control.BackgroundProperty, inputBg),
+                    new Setter(Control.ForegroundProperty, lightText),
+                    new Setter(TextBox.CaretBrushProperty, lightText),
+                    new Setter(Control.BorderBrushProperty, border));
+                Resources[typeof(RichTextBox)] = MakeStyle(typeof(RichTextBox),
+                    new Setter(Control.BackgroundProperty, inputBg),
+                    new Setter(Control.ForegroundProperty, lightText),
+                    new Setter(Control.BorderBrushProperty, border));
+                Resources[typeof(PasswordBox)] = MakeStyle(typeof(PasswordBox),
+                    new Setter(Control.BackgroundProperty, inputBg),
+                    new Setter(Control.ForegroundProperty, lightText),
+                    new Setter(Control.BorderBrushProperty, border));
+                Resources[typeof(ComboBox)] = MakeStyle(typeof(ComboBox),
+                    new Setter(Control.BackgroundProperty, controlBg),
+                    new Setter(Control.ForegroundProperty, lightText),
+                    new Setter(Control.BorderBrushProperty, border));
+                Resources[typeof(DatePicker)] = MakeStyle(typeof(DatePicker),
+                    new Setter(Control.BackgroundProperty, inputBg),
+                    new Setter(Control.ForegroundProperty, lightText),
+                    new Setter(Control.BorderBrushProperty, border));
+
+                foreach (var t in new[] { typeof(ListBox), typeof(ListView), typeof(TreeView) })
+                    Resources[t] = MakeStyle(t,
+                        new Setter(Control.BackgroundProperty, inputBg),
+                        new Setter(Control.ForegroundProperty, lightText),
+                        new Setter(Control.BorderBrushProperty, border));
+
+                Resources[typeof(DataGrid)] = MakeStyle(typeof(DataGrid),
+                    new Setter(Control.BackgroundProperty, darkBg),
+                    new Setter(Control.ForegroundProperty, lightText),
+                    new Setter(DataGrid.RowBackgroundProperty, darkBg),
+                    new Setter(DataGrid.AlternatingRowBackgroundProperty, controlBg),
+                    new Setter(DataGrid.GridLinesVisibilityProperty, DataGridGridLinesVisibility.None),
+                    new Setter(Control.BorderBrushProperty, border));
+                Resources[typeof(DataGridColumnHeader)] = MakeStyle(typeof(DataGridColumnHeader),
+                    new Setter(Control.BackgroundProperty, controlBg),
+                    new Setter(Control.ForegroundProperty, lightText),
+                    new Setter(Control.BorderBrushProperty, border));
+                Resources[typeof(GridViewColumnHeader)] = MakeStyle(typeof(GridViewColumnHeader),
+                    new Setter(Control.BackgroundProperty, controlBg),
+                    new Setter(Control.ForegroundProperty, lightText),
+                    new Setter(Control.BorderBrushProperty, border));
+
+                Resources[typeof(GroupBox)] = MakeStyle(typeof(GroupBox),
+                    new Setter(Control.ForegroundProperty, lightText),
+                    new Setter(Control.BorderBrushProperty, border));
+                Resources[typeof(Label)] = MakeStyle(typeof(Label),
+                    new Setter(Control.ForegroundProperty, lightText));
+                Resources[typeof(CheckBox)] = MakeStyle(typeof(CheckBox),
+                    new Setter(Control.ForegroundProperty, lightText));
+                Resources[typeof(RadioButton)] = MakeStyle(typeof(RadioButton),
+                    new Setter(Control.ForegroundProperty, lightText));
+
+                Resources[typeof(Menu)] = MakeStyle(typeof(Menu),
+                    new Setter(Control.BackgroundProperty, controlBg),
+                    new Setter(Control.ForegroundProperty, lightText));
+                Resources[typeof(MenuItem)] = MakeStyle(typeof(MenuItem),
+                    new Setter(Control.ForegroundProperty, lightText));
+                Resources[typeof(ToolBarTray)] = MakeStyle(typeof(ToolBarTray),
+                    new Setter(Control.BackgroundProperty, controlBg));
+                Resources[typeof(ToolBar)] = MakeStyle(typeof(ToolBar),
+                    new Setter(Control.BackgroundProperty, controlBg),
+                    new Setter(Control.ForegroundProperty, lightText));
+                Resources[typeof(StatusBar)] = MakeStyle(typeof(StatusBar),
+                    new Setter(Control.BackgroundProperty, controlBg),
+                    new Setter(Control.ForegroundProperty, lightText));
+
+                Resources[typeof(ScrollViewer)] = MakeStyle(typeof(ScrollViewer),
+                    new Setter(Control.BackgroundProperty, darkBg));
+                Resources[typeof(GridSplitter)] = MakeStyle(typeof(GridSplitter),
+                    new Setter(Control.BackgroundProperty, border));
+                Resources[typeof(Calendar)] = MakeStyle(typeof(Calendar),
+                    new Setter(Control.BackgroundProperty, controlBg),
+                    new Setter(Control.ForegroundProperty, lightText),
+                    new Setter(Control.BorderBrushProperty, border));
+                Resources[typeof(ProgressBar)] = MakeStyle(typeof(ProgressBar),
+                    new Setter(Control.BackgroundProperty, controlBg),
+                    new Setter(Control.BorderBrushProperty, border));
+            }
+            else
+            {
+                Background = SystemColors.WindowBrush;
+                Foreground = SystemColors.WindowTextBrush;
+
+                var keys = new object[]
+                {
+                    SystemColors.WindowBrushKey, SystemColors.WindowTextBrushKey,
+                    SystemColors.ControlBrushKey, SystemColors.ControlTextBrushKey,
+                    SystemColors.ActiveBorderBrushKey, SystemColors.InactiveBorderBrushKey,
+                    typeof(Button), typeof(ToggleButton), typeof(RepeatButton),
+                    typeof(TabControl), typeof(TabItem),
+                    typeof(TextBox), typeof(RichTextBox), typeof(PasswordBox),
+                    typeof(ComboBox), typeof(DatePicker),
+                    typeof(ListBox), typeof(ListView), typeof(TreeView),
+                    typeof(DataGrid), typeof(DataGridColumnHeader), typeof(GridViewColumnHeader),
+                    typeof(GroupBox), typeof(Label), typeof(CheckBox), typeof(RadioButton),
+                    typeof(Menu), typeof(MenuItem), typeof(ToolBarTray), typeof(ToolBar),
+                    typeof(StatusBar), typeof(ScrollViewer), typeof(GridSplitter),
+                    typeof(Calendar), typeof(ProgressBar)
+                };
+                foreach (var key in keys)
+                    Resources.Remove(key);
+            }
+        }
+
+        /// <summary>
+        /// Создаёт стиль для указанного типа элемента с заданными свойствами.
+        /// </summary>
+        private Style MakeStyle(Type targetType, params Setter[] setters)
+        {
+            var style = new Style(targetType);
+            foreach (var s in setters)
+                style.Setters.Add(s);
+            return style;
+        }
+
+        /// <summary>
+        /// Обработчик пункта меню "Тёмная тема".
+        /// Применяет тёмную тему и синхронизирует ToggleButton.
+        /// </summary>
+        private void DarkTheme_Click(object sender, RoutedEventArgs e)
+        {
+            ApplyTheme(true);
+            ThemeToggle.IsChecked = true;
+        }
+
+        /// <summary>
+        /// Обработчик пункта меню "Светлая тема".
+        /// Применяет светлую тему и синхронизирует ToggleButton.
+        /// </summary>
+        private void LightTheme_Click(object sender, RoutedEventArgs e)
+        {
+            ApplyTheme(false);
+            ThemeToggle.IsChecked = false;
+        }
+
+        /// <summary>
+        /// Обработчик ToggleButton "Тема" на панели инструментов.
+        /// Переключает между тёмной и светлой темой.
+        /// </summary>
+        private void ThemeToggle_Click(object sender, RoutedEventArgs e)
+        {
+            ApplyTheme(ThemeToggle.IsChecked == true);
+        }
+
+        /// <summary>
+        /// Обработчик кнопки "Загрузить аватар".
+        /// Открывает диалог выбора файла и устанавливает выбранное изображение в качестве аватара.
+        /// </summary>
+        private void LoadAvatar_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog
+            {
+                Title = "Выберите изображение",
+                Filter = "Изображения|*.png;*.jpg;*.jpeg;*.bmp|Все файлы|*.*"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                AvatarImage.Source = new BitmapImage(new Uri(dialog.FileName));
+            }
+        }
+
+        /// <summary>
+        /// Обработчик ToggleButton "Режим редактирования".
+        /// Скрывает или показывает правую панель.
+        /// </summary>
+        private void EditModeToggle_Click(object sender, RoutedEventArgs e)
+        {
+            if (EditModeToggle.IsChecked == true)
+            {
+                RightPanel.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                RightPanel.Visibility = Visibility.Visible;
+            }
+        }
+
+        /// <summary>
+        /// Обработчик RepeatButton " - ".
+        /// Уменьшает значение на 1 (минимум 0).
+        /// </summary>
+        private void DecreaseValue_Click(object sender, RoutedEventArgs e)
+        {
+            int value = int.Parse(RepeatValueText.Text);
+            if (value > 0)
+                RepeatValueText.Text = (value - 1).ToString();
+        }
+
+        /// <summary>
+        /// Обработчик RepeatButton " + ".
+        /// Увеличивает значение на 1 (максимум 100).
+        /// </summary>
+        private void IncreaseValue_Click(object sender, RoutedEventArgs e)
+        {
+            int value = int.Parse(RepeatValueText.Text);
+            if (value < 100)
+                RepeatValueText.Text = (value + 1).ToString();
+        }
+
+        /// <summary>
+        /// Обработчик пункта меню "Выход".
+        /// Завершает работу приложения.
+        /// </summary>
+        private void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }
