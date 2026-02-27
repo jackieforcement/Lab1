@@ -69,6 +69,7 @@
     </Compile>
     <Compile Include="UserProfile.cs" />
     <Compile Include="Habit.cs" />
+    <Compile Include="DailyStatistic.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

@@ -45,15 +45,15 @@
         <!-- ==================== СТРОКА СОСТОЯНИЯ ==================== -->
         <StatusBar DockPanel.Dock="Bottom">
             <StatusBarItem>
-                <TextBlock Text="Готово"/>
+                <TextBlock x:Name="StatusText" Text="Готово"/>
             </StatusBarItem>
             <Separator/>
             <StatusBarItem>
-                <TextBlock Text="Привычек: 0"/>
+                <TextBlock x:Name="HabitCountText" Text="Привычек: 0"/>
             </StatusBarItem>
             <Separator/>
             <StatusBarItem HorizontalAlignment="Right">
-                <TextBlock Text="Пользователь: Не авторизован"/>
+                <TextBlock x:Name="UserStatusText" Text="Пользователь: Не авторизован"/>
             </StatusBarItem>
         </StatusBar>
 
@@ -70,7 +70,8 @@
             <!-- ===================================================================== -->
             <!-- ЛЕВАЯ ПАНЕЛЬ: TabControl с 3 вкладками                                -->
             <!-- ===================================================================== -->
-            <TabControl Grid.Column="0">
+            <TabControl x:Name="MainTabControl" Grid.Column="0"
+                        SelectionChanged="MainTabControl_SelectionChanged">
 
                 <!-- ==================== ВКЛАДКА 1: ЛИЧНЫЕ ДАННЫЕ ==================== -->
                 <TabItem Header="Личные данные">
@@ -190,19 +191,23 @@
 
                             <!-- ListView: дневная статистика -->
                             <Label Content="Дневная статистика:"/>
-                            <ListView Height="200" Margin="0,0,0,10">
+                            <ListView x:Name="StatsListView" Height="200" Margin="0,0,0,10">
                                 <ListView.View>
                                     <GridView>
-                                        <GridViewColumn Header="Дата" Width="120"/>
-                                        <GridViewColumn Header="Привычек выполнено" Width="150"/>
-                                        <GridViewColumn Header="Процент" Width="100"/>
+                                        <GridViewColumn Header="Дата" Width="120"
+                                                        DisplayMemberBinding="{Binding Date}"/>
+                                        <GridViewColumn Header="Привычек выполнено" Width="150"
+                                                        DisplayMemberBinding="{Binding CompletedCount}"/>
+                                        <GridViewColumn Header="Процент" Width="100"
+                                                        DisplayMemberBinding="{Binding Percentage}"/>
                                     </GridView>
                                 </ListView.View>
                             </ListView>
 
                             <!-- TreeView: категории привычек -->
                             <Label Content="Категории привычек:"/>
-                            <TreeView Height="250">
+                            <TreeView x:Name="StatsTreeView" Height="250"
+                                      SelectedItemChanged="StatsTreeView_SelectedItemChanged">
                                 <TreeViewItem Header="Здоровье" IsExpanded="True">
                                     <TreeViewItem Header="Физические упражнения"/>
                                     <TreeViewItem Header="Питание"/>
