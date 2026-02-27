@@ -33,6 +33,11 @@ namespace WpflLab1
         private ObservableCollection<Habit> _habits;
 
         /// <summary>
+        /// Коллекция дневной статистики для отображения в ListView.
+        /// </summary>
+        private ObservableCollection<DailyStatistic> _statistics;
+
+        /// <summary>
         /// Инициализирует новый экземпляр класса <see cref="MainWindow"/>.
         /// Загружает компоненты пользовательского интерфейса и настраивает начальное состояние.
         /// </summary>
@@ -43,6 +48,15 @@ namespace WpflLab1
             _habits = new ObservableCollection<Habit>();
             HabitsDataGrid.ItemsSource = _habits;
             HabitsCalendar.SelectedDate = DateTime.Today;
+
+            _statistics = new ObservableCollection<DailyStatistic>
+            {
+                new DailyStatistic { Date = "25.02.2026", CompletedCount = 5, Percentage = "83%" },
+                new DailyStatistic { Date = "26.02.2026", CompletedCount = 3, Percentage = "50%" },
+                new DailyStatistic { Date = "27.02.2026", CompletedCount = 6, Percentage = "100%" },
+                new DailyStatistic { Date = "28.02.2026", CompletedCount = 4, Percentage = "67%" },
+            };
+            StatsListView.ItemsSource = _statistics;
         }
 
         /// <summary>
@@ -174,6 +188,47 @@ namespace WpflLab1
             ProductivityText.Text = $"{(int)ProductivitySlider.Value}%";
             SatisfactionText.Text = $"{(int)SatisfactionSlider.Value}%";
             DayProgressBar.Value = (ProductivitySlider.Value + SatisfactionSlider.Value) / 2;
+        }
+
+        /// <summary>
+        /// Обработчик переключения вкладок.
+        /// Обновляет строку состояния в зависимости от выбранной вкладки.
+        /// </summary>
+        private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (StatusText == null || HabitCountText == null)
+                return;
+
+            switch (MainTabControl.SelectedIndex)
+            {
+                case 0:
+                    StatusText.Text = "Редактирование профиля";
+                    break;
+                case 1:
+                    StatusText.Text = "Управление привычками";
+                    break;
+                case 2:
+                    StatusText.Text = "Просмотр статистики";
+                    break;
+            }
+
+            HabitCountText.Text = $"Привычек: {_habits?.Count ?? 0}";
+        }
+
+        /// <summary>
+        /// Обработчик выбора элемента в TreeView категорий.
+        /// Обновляет строку состояния названием выбранной категории.
+        /// </summary>
+        private void StatsTreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (StatusText == null)
+                return;
+
+            var selectedItem = e.NewValue as TreeViewItem;
+            if (selectedItem != null)
+            {
+                StatusText.Text = $"Выбрана категория: {selectedItem.Header}";
+            }
         }
     }
 }
