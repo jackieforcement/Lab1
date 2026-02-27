@@ -81,13 +81,13 @@
                             <GroupBox Header="Основная информация" Margin="0,0,0,10">
                                 <StackPanel Margin="5">
                                     <Label Content="Имя:"/>
-                                    <TextBox Margin="0,0,0,5"/>
+                                    <TextBox x:Name="FirstNameTextBox" Margin="0,0,0,5"/>
                                     <Label Content="Фамилия:"/>
-                                    <TextBox Margin="0,0,0,5"/>
+                                    <TextBox x:Name="LastNameTextBox" Margin="0,0,0,5"/>
                                     <Label Content="Пароль:"/>
-                                    <PasswordBox Margin="0,0,0,5"/>
+                                    <PasswordBox x:Name="PasswordBox" Margin="0,0,0,5"/>
                                     <Label Content="Дата рождения:"/>
-                                    <DatePicker Margin="0,0,0,5"/>
+                                    <DatePicker x:Name="BirthDatePicker" Margin="0,0,0,5"/>
                                 </StackPanel>
                             </GroupBox>
 
@@ -95,14 +95,14 @@
                             <GroupBox Header="Дополнительные данные" Margin="0,0,0,10">
                                 <StackPanel Margin="5">
                                     <Label Content="Образование:"/>
-                                    <ComboBox Margin="0,0,0,5">
+                                    <ComboBox x:Name="EducationComboBox" Margin="0,0,0,5">
                                         <ComboBoxItem Content="Среднее"/>
                                         <ComboBoxItem Content="Среднее специальное"/>
                                         <ComboBoxItem Content="Высшее"/>
                                         <ComboBoxItem Content="Аспирантура"/>
                                     </ComboBox>
                                     <Label Content="Хобби (выберите несколько):"/>
-                                    <ListBox SelectionMode="Multiple" Height="120" Margin="0,0,0,5">
+                                    <ListBox x:Name="HobbiesListBox" SelectionMode="Multiple" Height="120" Margin="0,0,0,5">
                                         <ListBoxItem Content="Спорт"/>
                                         <ListBoxItem Content="Чтение"/>
                                         <ListBoxItem Content="Музыка"/>
@@ -115,18 +115,26 @@
                             <!-- GroupBox 3: Настройки отображения -->
                             <GroupBox Header="Настройки отображения" Margin="0,0,0,10">
                                 <StackPanel Margin="5">
-                                    <CheckBox Content="Получать уведомления" Margin="0,0,0,5"/>
-                                    <CheckBox Content="Показывать статистику публично" Margin="0,0,0,5"/>
-                                    <CheckBox Content="Автосохранение" Margin="0,0,0,10"/>
+                                    <CheckBox x:Name="NotificationsCheckBox" Content="Получать уведомления" Margin="0,0,0,5"/>
+                                    <CheckBox x:Name="PublicStatsCheckBox" Content="Показывать статистику публично" Margin="0,0,0,5"/>
+                                    <CheckBox x:Name="AutoSaveCheckBox" Content="Автосохранение" Margin="0,0,0,10"/>
 
                                     <Label Content="Уровень активности:"/>
                                     <WrapPanel Margin="0,0,0,5">
-                                        <RadioButton Content="Низкий" GroupName="ActivityLevel" Margin="0,0,15,0"/>
-                                        <RadioButton Content="Средний" GroupName="ActivityLevel" Margin="0,0,15,0"/>
-                                        <RadioButton Content="Высокий" GroupName="ActivityLevel"/>
+                                        <RadioButton x:Name="LowActivityRadio" Content="Низкий" GroupName="ActivityLevel" Margin="0,0,15,0"/>
+                                        <RadioButton x:Name="MediumActivityRadio" Content="Средний" GroupName="ActivityLevel" Margin="0,0,15,0"/>
+                                        <RadioButton x:Name="HighActivityRadio" Content="Высокий" GroupName="ActivityLevel"/>
                                     </WrapPanel>
                                 </StackPanel>
                             </GroupBox>
+
+                            <!-- Кнопки управления -->
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5,0,0">
+                                <Button Content="Сохранить данные" Padding="15,8" Margin="0,0,10,0"
+                                        Click="SaveProfile_Click"/>
+                                <Button Content="Сброс" Padding="15,8"
+                                        Click="ResetProfile_Click"/>
+                            </StackPanel>
 
                         </StackPanel>
                     </ScrollViewer>
