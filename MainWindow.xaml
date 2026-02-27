@@ -17,28 +17,29 @@
                 <MenuItem Header="Сохранить"/>
                 <MenuItem Header="Загрузить"/>
                 <Separator/>
-                <MenuItem Header="Выход"/>
+                <MenuItem Header="Выход" Click="Exit_Click"/>
             </MenuItem>
             <MenuItem Header="Правка">
                 <MenuItem Header="Копировать"/>
                 <MenuItem Header="Вставить"/>
             </MenuItem>
             <MenuItem Header="Вид">
-                <MenuItem Header="Тёмная тема"/>
-                <MenuItem Header="Светлая тема"/>
+                <MenuItem Header="Тёмная тема" Click="DarkTheme_Click"/>
+                <MenuItem Header="Светлая тема" Click="LightTheme_Click"/>
             </MenuItem>
         </Menu>
 
         <!-- ==================== ПАНЕЛЬ ИНСТРУМЕНТОВ ==================== -->
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>
-                <Button Content="Сохранить" ToolTip="Сохранить данные"/>
+                <Button Content="Сохранить" ToolTip="Сохранить данные" Click="SaveProfile_Click"/>
                 <Button Content="Загрузить" ToolTip="Загрузить данные"/>
                 <Separator/>
                 <Button Content="Копировать" ToolTip="Копировать"/>
                 <Button Content="Вставить" ToolTip="Вставить"/>
                 <Separator/>
-                <ToggleButton Content="Тема" ToolTip="Переключить тему"/>
+                <ToggleButton x:Name="ThemeToggle" Content="Тема" ToolTip="Переключить тему"
+                              Click="ThemeToggle_Click"/>
             </ToolBar>
         </ToolBarTray>
 
@@ -274,17 +275,19 @@
             <!-- ===================================================================== -->
             <!-- ПРАВАЯ ПАНЕЛЬ: аватар, информация, кнопки действий                    -->
             <!-- ===================================================================== -->
-            <ScrollViewer Grid.Column="4" VerticalScrollBarVisibility="Auto">
+            <ScrollViewer x:Name="RightPanel" Grid.Column="4" VerticalScrollBarVisibility="Auto">
                 <StackPanel Margin="10">
 
                     <!-- Аватар пользователя -->
                     <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="5"
                             Padding="10" Margin="0,0,0,15" HorizontalAlignment="Center">
                         <StackPanel HorizontalAlignment="Center">
-                            <Image Width="120" Height="120" Stretch="UniformToFill"/>
+                            <Image x:Name="AvatarImage" Width="120" Height="120" Stretch="UniformToFill"/>
                             <TextBlock Text="Аватар пользователя"
                                        HorizontalAlignment="Center" Margin="0,5,0,0"
                                        FontStyle="Italic" Foreground="Gray"/>
+                            <Button Content="Загрузить аватар" Padding="10,5" Margin="0,5,0,0"
+                                    Click="LoadAvatar_Click"/>
                         </StackPanel>
                     </Border>
 
@@ -313,19 +316,22 @@
                             HorizontalAlignment="Stretch" FontSize="14"/>
 
                     <!-- Кнопка "Режим редактирования" -->
-                    <ToggleButton Content="Режим редактирования" Padding="10,8"
-                                  Margin="0,0,0,10" HorizontalAlignment="Stretch"/>
+                    <ToggleButton x:Name="EditModeToggle" Content="Режим редактирования" Padding="10,8"
+                                  Margin="0,0,0,10" HorizontalAlignment="Stretch"
+                                  Click="EditModeToggle_Click"/>
 
                     <!-- Быстрое изменение значения (RepeatButton) -->
                     <GroupBox Header="Быстрое изменение значения" Margin="0,0,0,10">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
                                     Margin="5">
                             <RepeatButton Content=" - " Width="40" Height="30"
-                                          Delay="300" Interval="100"/>
-                            <TextBlock Text="50" VerticalAlignment="Center" Margin="15,0"
+                                          Delay="300" Interval="100"
+                                          Click="DecreaseValue_Click"/>
+                            <TextBlock x:Name="RepeatValueText" Text="50" VerticalAlignment="Center" Margin="15,0"
                                        FontSize="18" FontWeight="Bold"/>
                             <RepeatButton Content=" + " Width="40" Height="30"
-                                          Delay="300" Interval="100"/>
+                                          Delay="300" Interval="100"
+                                          Click="IncreaseValue_Click"/>
                         </StackPanel>
                     </GroupBox>
 
